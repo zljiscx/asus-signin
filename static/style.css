@@ -12,7 +12,7 @@ h1 { text-align: center; color: #333; }
     font-weight: bold;
     position: relative;
     box-sizing: border-box;
-    height: 45px;
+    height: 40px;
 }
 .day.header { background: #ddd; }
 .day.success { background: #a5d6a7; }
