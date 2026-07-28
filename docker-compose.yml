@@ -1,12 +1,11 @@
 services:
   signin:
-    build: .
-    image: asus-signin:latest
+    image: zljiscx/asus-signin:latest
     container_name: asus-signin
     volumes:
       - ./data:/app/data
-      - ./templates:/app/templates   # 新增
-      - ./static:/app/static         # 新增
+      - ./templates:/app/templates
+      - ./static:/app/static
     environment:
       - TZ=Asia/Shanghai
     ports:
