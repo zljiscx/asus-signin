@@ -313,7 +313,7 @@ def main():
     worker = threading.Thread(target=background_worker, args=(session,), daemon=True)
     worker.start()
     app.config['TEMPLATES_AUTO_RELOAD'] = True
-    app.run(host='0.0.0.0', port=3344, debug=True)
+    app.run(host='0.0.0.0', port=23344, debug=True)
 
 if __name__ == "__main__":
     main()
