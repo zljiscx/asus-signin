@@ -1,0 +1,52 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>硕学霸自动签到WEB管理</title>
+    <link rel="stylesheet" href="{{ url_for('static', filename='style.css') }}">
+</head>
+<body>
+<div class="container">
+    <h1>📅 硕学霸签到记录</h1>
+    <div class="legend">
+        <div class="legend-item"><span class="color-box green"></span> 本地签到成功</div>
+        <div class="legend-item"><span class="color-box blue"></span> 平台签到记录</div>
+        <div class="legend-item"><span class="color-box both"></span> 两者均有</div>
+        <div class="legend-item"><span class="color-box gray"></span> 未签到</div>
+    </div>
+    <div class="month-nav">
+        <div class="nav-buttons">
+            <button class="blue" id="prevMonth">‹ 上月</button>
+            <button class="gray" id="todayMonth">当月</button>
+            <button class="blue" id="nextMonth">下月 ›</button>
+        </div>
+        <span id="monthLabel"></span>
+    </div>
+    <div id="calendar" class="calendar"></div>
+
+    <div class="section">
+        <h2>⚙️ 设置</h2>
+        <div class="setting-group">
+            <label for="signTime">签到时间：</label>
+            <input type="time" id="signTime" value="05:00" step="60">
+            <button id="saveSettingBtn">保存设置</button>
+            <span id="settingMsg" style="color:#888;"></span>
+        </div>
+    </div>
+
+    <div class="section">
+        <div class="flex-row">
+            <h2 style="margin:0;">🔄 更新 Cookies</h2>
+            <div class="right">
+                <button id="submitCookieBtn">提交 Cookies</button>
+            </div>
+        </div>
+        <p>支持 <code>key1=value1; key2=value2; ...</code> 或 JSON 格式</p>
+        <textarea id="cookieInput" rows="5" placeholder='粘贴 Cookies，例如：csrftoken=xxx; sessionid=yyy'></textarea><br>
+        <div id="msg"></div>
+    </div>
+</div>
+<script src="{{ url_for('static', filename='script.js') }}"></script>
+</body>
+</html>

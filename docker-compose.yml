@@ -1,0 +1,14 @@
+services:
+  signin:
+    build: .
+    image: asus-signin:latest
+    container_name: asus-signin
+    volumes:
+      - ./data:/app/data
+      - ./templates:/app/templates   # 新增
+      - ./static:/app/static         # 新增
+    environment:
+      - TZ=Asia/Shanghai
+    ports:
+      - "5000:5000"
+    restart: unless-stopped
