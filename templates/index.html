@@ -10,19 +10,21 @@
 <body>
 <div class="container">
     <h1>📅 硕学霸签到记录</h1>
-    <div class="legend">
-        <div class="legend-item"><span class="color-box green"></span> 本地</div>
-        <div class="legend-item"><span class="color-box blue"></span> 平台</div>
-        <div class="legend-item"><span class="color-box both"></span> 均有</div>
-        <div class="legend-item"><span class="color-box gray"></span> 未签</div>
-    </div>
-    <div class="month-nav">
+    <!-- 年月标题，单独一行 -->
+    <div id="monthLabel" class="month-title"></div>
+    <!-- 第二行：导航按钮（左）和图例（右） -->
+    <div class="nav-legend-row">
         <div class="nav-buttons">
             <button class="blue" id="prevMonth">‹ 上月</button>
             <button class="gray" id="todayMonth">当月</button>
             <button class="blue" id="nextMonth">下月 ›</button>
         </div>
-        <span id="monthLabel"></span>
+        <div class="legend">
+            <div class="legend-item"><span class="color-box green"></span> 本地</div>
+            <div class="legend-item"><span class="color-box blue"></span> 平台</div>
+            <div class="legend-item"><span class="color-box both"></span> 均有</div>
+            <div class="legend-item"><span class="color-box gray"></span> 未签</div>
+        </div>
     </div>
     <div id="calendar" class="calendar"></div>
 
@@ -37,14 +39,14 @@
     </div>
 
     <div class="section">
-        <div class="flex-row">
-            <h2 style="margin:0;">🔄 更新 Cookies</h2>
-            <div class="right">
-                <button id="submitCookieBtn">提交 Cookies</button>
-            </div>
+        <!-- 标题单独一行 -->
+        <h2 style="margin:0 0 10px 0;">🔄 更新 Cookies</h2>
+        <!-- 提示文字与按钮同一行，按钮靠右 -->
+        <div class="cookie-row">
+            <p style="margin:0;">支持 <code>key1=value1; key2=value2; ...</code> 或 JSON 格式</p>
+            <button id="submitCookieBtn">提交 Cookies</button>
         </div>
-        <p>支持 <code>key1=value1; key2=value2; ...</code> 或 JSON 格式</p>
-        <textarea id="cookieInput" rows="5" placeholder='粘贴 Cookies，例如：csrftoken=xxx; sessionid=yyy'></textarea><br>
+        <textarea id="cookieInput" rows="5" placeholder='粘贴 Cookies，例如：csrftoken=xxx; sessionid=yyy'></textarea>
         <div id="msg"></div>
     </div>
 </div>
