@@ -8,6 +8,7 @@ h1 { text-align: center; color: #333; }
 .day.platform { background: #90caf9; }
 .day.both { background: #81c784; border: 6px solid #2196f3; }
 .day.empty { background: transparent; }
+.day.today { color: red; }
 .legend { display: flex; gap: 15px; flex-wrap: wrap; margin: 0; }
 .legend-item { display: flex; align-items: center; gap: 5px; }
 .color-box { width: 20px; height: 20px; border-radius: 4px; box-sizing: border-box; }
