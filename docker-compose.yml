@@ -4,8 +4,6 @@ services:
     container_name: asus-signin
     volumes:
       - ./data:/app/data
-      - ./static:/app/static
-      - ./templates:/app/templates
     environment:
       - TZ=Asia/Shanghai
     ports:
