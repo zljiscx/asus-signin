@@ -22,9 +22,8 @@ MONTH_LIST_URL = "https://xueba.asus.com.cn/3ea5551da13d4234af1aa34a919c34d6/sxb
 # ---------- 默认 Cookie ----------
 DEFAULT_COOKIES = {
     "csrftoken": "yHA7oyLobMp8m1JgnfR5TidCo8aapJFs1gAlxMjaoicmnT4GU8ZH8sTz3q3xD0N3",
-    "sessionid": "nem2a2xz5hfp5ud2dxspabaq3i2rld2c",
-    "acw_tc": "2f66178217850361391817540eab1fbe429912fae97d0a523f91c3239070eb",
-    "HMACCOUNT": "E0A99F3B48D61745",
+    "acw_tc": "2f66178217852487381362968e068cf46dbd39eff5fe9f3795029912656400",
+    "sessionid": "2p8wgx1uo55sdo62sdi70vdmkk98qzvq"
 }
 
 # ---------- 请求头模板 ----------
