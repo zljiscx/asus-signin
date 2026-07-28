@@ -4,16 +4,17 @@
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>硕学霸自动签到WEB管理</title>
+    <link rel="icon" href="{{ url_for('static', filename='favicon.ico') }}" type="image/x-icon">
     <link rel="stylesheet" href="{{ url_for('static', filename='style.css') }}">
 </head>
 <body>
 <div class="container">
     <h1>📅 硕学霸签到记录</h1>
     <div class="legend">
-        <div class="legend-item"><span class="color-box green"></span> 本地签到成功</div>
-        <div class="legend-item"><span class="color-box blue"></span> 平台签到记录</div>
-        <div class="legend-item"><span class="color-box both"></span> 两者均有</div>
-        <div class="legend-item"><span class="color-box gray"></span> 未签到</div>
+        <div class="legend-item"><span class="color-box green"></span> 本地</div>
+        <div class="legend-item"><span class="color-box blue"></span> 平台</div>
+        <div class="legend-item"><span class="color-box both"></span> 均有</div>
+        <div class="legend-item"><span class="color-box gray"></span> 未签</div>
     </div>
     <div class="month-nav">
         <div class="nav-buttons">
