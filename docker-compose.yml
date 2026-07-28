@@ -4,10 +4,19 @@ services:
     container_name: asus-signin
     volumes:
       - ./data:/app/data
-      - ./templates:/app/templates
       - ./static:/app/static
+      - ./templates:/app/templates
     environment:
       - TZ=Asia/Shanghai
     ports:
       - "5000:5000"
     restart: unless-stopped
+  watchtower:
+    image: containrrr/watchtower
+    container_name: watchtower
+    volumes:
+      - /var/run/docker.sock:/var/run/docker.sock   # 挂载 Docker 接口，让它有权限管理容器
+    environment:
+      - TZ=Asia/Shanghai
+    restart: unless-stopped
+    command: --interval 3600 --cleanup   # 3600秒=1小时检查一次；--cleanup表示更新后自动删除旧镜像
