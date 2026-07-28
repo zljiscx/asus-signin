@@ -20,7 +20,7 @@ h1 { text-align: center; color: #333; }
 .flex-row .right { margin-left: auto; display: flex; gap: 10px; align-items: center; }
 .cookie-row { display: flex; align-items: center; justify-content: space-between; margin-bottom: 8px; }
 .cookie-row p { margin: 0; }
-textarea { width: 100%; font-family: monospace; padding: 8px; border: 1px solid #ccc; border-radius: 4px; }
+textarea { width: 100%; font-family: monospace; padding: 8px; border: 1px solid #ccc; border-radius: 4px; box-sizing: border-box; }
 button { padding: 8px 16px; background: #4CAF50; color: white; border: none; border-radius: 4px; cursor: pointer; }
 button:hover { background: #45a049; }
 button.blue { background: #2196F3; }
@@ -32,4 +32,4 @@ button.gray:hover { background: #666; }
 .nav-legend-row { display: flex; align-items: center; justify-content: space-between; margin: 10px 0; flex-wrap: wrap; gap: 10px; }
 .nav-buttons { display: flex; gap: 8px; }
 .setting-group { display: flex; align-items: center; gap: 10px; margin: 10px 0; }
-.setting-group input[type="time"] { padding: 6px; border: 1px solid #ccc; border-radius: 4px; }
+.setting-group input[type="time"] { padding: 6px; border: 1px solid #ccc; border-radius: 4px; box-sizing: border-box; }
