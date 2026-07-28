@@ -14,6 +14,8 @@ function renderCalendar(histories) {
     const month = currentDate.getMonth();
     const firstDay = new Date(year, month, 1).getDay();
     const daysInMonth = new Date(year, month + 1, 0).getDate();
+    const now = new Date();
+    const today = `${now.getFullYear()}-${String(now.getMonth()+1).padStart(2,'0')}-${String(now.getDate()).padStart(2,'0')}`;
 
     const monthNames = ['一月','二月','三月','四月','五月','六月','七月','八月','九月','十月','十一月','十二月'];
     document.getElementById('monthLabel').textContent = `${year}年 ${monthNames[month]}`;
@@ -41,6 +43,9 @@ function renderCalendar(histories) {
         div.className = 'day';
         div.textContent = day;
 
+        if (dateStr === today) {
+            div.classList.add('today');
+        }
         const localStatus = histories.local[dateStr];
         const platformHas = histories.platform.includes(dateStr);
 
