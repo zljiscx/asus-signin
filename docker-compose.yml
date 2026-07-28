@@ -7,7 +7,7 @@ services:
     environment:
       - TZ=Asia/Shanghai
     ports:
-      - "5000:5000"
+      - "23344:23344"
     restart: unless-stopped
   watchtower:
     image: containrrr/watchtower
