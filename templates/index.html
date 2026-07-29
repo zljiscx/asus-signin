@@ -28,15 +28,22 @@
     </div>
     <div id="calendar" class="calendar"></div>
 
-    <div class="section">
-        <h2>⚙️ 设置</h2>
-        <div class="setting-group">
-            <label for="signTime">签到时间：</label>
-            <input type="time" id="signTime" value="05:00" step="60">
-            <button id="saveSettingBtn">保存设置</button>
-            <span id="settingMsg" style="color:#888;"></span>
-        </div>
+<div class="section">
+    <h2>⚙️ 设置</h2>
+    <div class="setting-group">
+        <label for="signTime">签到时间：</label>
+        <input type="time" id="signTime" value="05:00" step="60">
+        <button id="saveSettingBtn">保存设置</button>
+        <span id="settingMsg" style="color:#888;"></span>
     </div>
+
+    <div class="setting-group">
+        <label for="webhookKey">Webhook Key：</label>
+        <input type="text" id="webhookKey" placeholder="企微群聊的消息推送Webhook地址中的key,例如：33256f8a-874b-49e2-be6d-f77f82c77e4e" style="flex:1; min-width:200px;">
+        <button id="saveWebhookBtn" class="blue">保存 Key</button>
+        <span id="webhookMsg" style="color:#888;"></span>
+    </div>
+</div>
 
     <div class="section">
         <!-- 标题单独一行 -->
