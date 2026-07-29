@@ -6,6 +6,7 @@ services:
       - ./data:/app/data
     environment:
       - TZ=Asia/Shanghai
+      - WECOM_WEBHOOK_KEY=你的真实key
     ports:
       - "23344:23344"
     restart: unless-stopped
