@@ -33,5 +33,7 @@ button.gray:hover { background: #666; }
 .nav-legend-row { display: flex; align-items: center; justify-content: space-between; margin: 10px 0; flex-wrap: wrap; gap: 10px; }
 .nav-buttons { display: flex; gap: 8px; }
 .setting-group { display: flex; align-items: center; gap: 10px; margin: 10px 0; }
-.setting-group input[type="time"] { padding: 6px; border: 1px solid #ccc; border-radius: 4px; box-sizing: border-box; }
-.setting-group input[type="text"], .setting-group input[type="time"], .setting-group button { height: 36px; box-sizing: border-box; padding: 0 12px; }
+.setting-group input[type="text"] { flex: 1; min-width: 200px; height: 36px; box-sizing: border-box; padding: 0 12px; }
+.setting-group input[type="time"] { height: 36px; box-sizing: border-box; padding: 0 12px; }
+.setting-group button { height: 36px; box-sizing: border-box; padding: 0 16px; }
+#webhookMsg { margin-top: 5px; color: #888; }
