@@ -161,6 +161,12 @@ document.getElementById('submitCookieBtn').addEventListener('click', () => {
 
 document.getElementById('saveWebhookBtn').addEventListener('click', () => {
     const key = document.getElementById('webhookKey').value.trim();
+    // 如果 key 为空，弹出确认框
+    if (!key) {
+        if (!confirm('⚠️ 确认要清空 Webhook Key 吗？\n清空后将不会推送任何消息。')) {
+            return; // 取消则不提交
+        }
+    }
     // 简单验证：只允许字母、数字、连字符（UUID格式）
     if (key && !/^[a-f0-9\-]+$/i.test(key)) {
         document.getElementById('webhookMsg').textContent = '⚠️ Key 格式不正确（应为字母数字和连字符）';
@@ -179,5 +185,6 @@ document.getElementById('saveWebhookBtn').addEventListener('click', () => {
         document.getElementById('webhookMsg').style.color = 'red';
     });
 });
+
 loadSetting();
 refreshCalendar();
