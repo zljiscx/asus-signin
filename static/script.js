@@ -90,9 +90,6 @@ function loadSetting() {
         if (data.sign_time) {
             document.getElementById('signTime').value = data.sign_time;
         }
-        if (data.wecom_webhook_key) {
-            document.getElementById('webhookKey').value = data.wecom_webhook_key;
-        }
     }).catch(e => console.error('加载设置失败', e));
 }
 
