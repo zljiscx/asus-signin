@@ -34,3 +34,4 @@ button.gray:hover { background: #666; }
 .nav-buttons { display: flex; gap: 8px; }
 .setting-group { display: flex; align-items: center; gap: 10px; margin: 10px 0; }
 .setting-group input[type="time"] { padding: 6px; border: 1px solid #ccc; border-radius: 4px; box-sizing: border-box; }
+.setting-group input[type="text"], .setting-group input[type="time"], .setting-group button { height: 36px; box-sizing: border-box; padding: 0 12px; }
