@@ -53,19 +53,63 @@ session = None
 history_lock = threading.Lock()
 setting_lock = threading.Lock()
 
+
+def get_wecom_webhook_key():
+    """获取企业微信 Webhook Key，优先级：setting.json > 环境变量"""
+    # 1. 从 setting.json 读取
+    with setting_lock:
+        setting = load_setting()
+        key = setting.get('wecom_webhook_key', '').strip()
+        if key:
+            return key
+    # 2. 从环境变量读取
+    key = os.environ.get('WECOM_WEBHOOK_KEY', '').strip()
+    if key:
+        return key
+    return None
+
+
+def send_wecom_message(content):
+    """通过企业微信机器人发送消息到群"""
+    key = get_wecom_webhook_key()
+    if not key:
+        print("[推送] 未配置 Webhook Key，跳过发送", flush=True)
+        return
+    url = f"https://qyapi.weixin.qq.com/cgi-bin/webhook/send?key={key}"
+    try:
+        data = {
+            "msgtype": "text",
+            "text": {"content": content}
+        }
+        resp = requests.post(url, data=json.dumps(data), timeout=10)
+        if resp.status_code == 200:
+            result = resp.json()
+            if result.get('errcode') == 0:
+                print(f"[推送] 消息发送成功", flush=True)
+            else:
+                print(f"[推送] 发送失败: {result}", flush=True)
+        else:
+            print(f"[推送] HTTP错误: {resp.status_code}", flush=True)
+    except Exception as e:
+        print(f"[推送] 异常: {e}", flush=True)
+
+
 # ==================== 工具函数 ====================
 def ensure_data_dir():
     os.makedirs(DATA_DIR, exist_ok=True)
+
 
 def ensure_default_cookie_file():
     if not os.path.exists(CONFIG_FILE):
         with open(CONFIG_FILE, "w", encoding="utf-8") as f:
             json.dump(DEFAULT_COOKIES, f, indent=2, ensure_ascii=False)
 
+
 def ensure_default_setting_file():
     if not os.path.exists(SETTING_FILE):
         with open(SETTING_FILE, "w", encoding="utf-8") as f:
             json.dump({"sign_time": "05:00"}, f, indent=2)
+
 
 def load_cookies() -> dict:
     try:
@@ -73,6 +117,7 @@ def load_cookies() -> dict:
             return json.load(f)
     except (FileNotFoundError, json.JSONDecodeError, IOError):
         return DEFAULT_COOKIES.copy()
+
 
 def save_cookies(cookies: dict) -> bool:
     try:
@@ -82,12 +127,14 @@ def save_cookies(cookies: dict) -> bool:
     except Exception:
         return False
 
+
 def load_setting() -> dict:
     try:
         with open(SETTING_FILE, "r", encoding="utf-8") as f:
             return json.load(f)
     except (FileNotFoundError, json.JSONDecodeError):
         return {"sign_time": "05:00"}
+
 
 def save_setting(setting: dict) -> bool:
     try:
@@ -97,10 +144,12 @@ def save_setting(setting: dict) -> bool:
     except Exception:
         return False
 
+
 def get_sign_time() -> str:
     with setting_lock:
         setting = load_setting()
         return setting.get("sign_time", "05:00")
+
 
 def load_last_sign_date() -> str | None:
     try:
@@ -111,6 +160,7 @@ def load_last_sign_date() -> str | None:
         pass
     return None
 
+
 def save_last_sign_date(date_str: str) -> bool:
     try:
         with open(LAST_SIGN_FILE, "w", encoding="utf-8") as f:
@@ -119,6 +169,7 @@ def save_last_sign_date(date_str: str) -> bool:
     except Exception:
         return False
 
+
 def load_history() -> dict:
     try:
         with open(HISTORY_FILE, "r", encoding="utf-8") as f:
@@ -126,9 +177,11 @@ def load_history() -> dict:
     except (FileNotFoundError, json.JSONDecodeError):
         return {}
 
+
 def save_history(history: dict):
     with open(HISTORY_FILE, "w", encoding="utf-8") as f:
         json.dump(history, f, indent=2, ensure_ascii=False)
+
 
 def record_sign_result(date_str: str, status: str):
     with history_lock:
@@ -136,10 +189,11 @@ def record_sign_result(date_str: str, status: str):
         hist[date_str] = status
         save_history(hist)
 
+
 def get_platform_dates(year: int, month: int) -> list:
     dt = datetime.datetime(year, month, 1, 0, 0, 0, tzinfo=datetime.timezone(datetime.timedelta(hours=8)))
     timestamp_ms = int(dt.timestamp() * 1000)
-    url = f"{MONTH_LIST_URL}?_T={int(time.time()*1000)}&date={timestamp_ms}"
+    url = f"{MONTH_LIST_URL}?_T={int(time.time() * 1000)}&date={timestamp_ms}"
     try:
         resp = session.get(url, timeout=10)
         resp.raise_for_status()
@@ -148,12 +202,13 @@ def get_platform_dates(year: int, month: int) -> list:
             dates = data['data']['dates']
             result = []
             for ts in dates:
-                d = datetime.datetime.fromtimestamp(ts/1000, tz=datetime.timezone(datetime.timedelta(hours=8)))
+                d = datetime.datetime.fromtimestamp(ts / 1000, tz=datetime.timezone(datetime.timedelta(hours=8)))
                 result.append(d.strftime("%Y-%m-%d"))
             return result
     except Exception as e:
         print(f"[平台] 获取签到记录失败: {e}", flush=True)
     return []
+
 
 def create_session() -> requests.Session:
     sess = requests.Session()
@@ -163,9 +218,11 @@ def create_session() -> requests.Session:
     sess.headers['X-CSRFTOKEN'] = cookies.get('csrftoken', '')
     return sess
 
+
 def refresh_csrf_token(sess: requests.Session) -> None:
     token = sess.cookies.get('csrftoken', '')
     sess.headers['X-CSRFTOKEN'] = token
+
 
 def do_heartbeat(sess: requests.Session) -> bool:
     old_cookies = sess.cookies.get_dict()
@@ -180,12 +237,18 @@ def do_heartbeat(sess: requests.Session) -> bool:
         save_cookies(new_cookies)
     return True
 
+
 def do_signin(sess: requests.Session) -> tuple[bool, str]:
     refresh_csrf_token(sess)
     try:
         resp = sess.post(SIGNIN_URL, data="{}", timeout=10)
         resp.raise_for_status()
     except Exception as e:
+        send_wecom_message(
+            f"❌ 硕学霸签到失败\n"
+            f"时间: {datetime.datetime.now().strftime('%Y-%m-%d %H:%M:%S')}\n"
+            f"网络请求异常: {e}"
+        )
         return False, f"网络请求失败: {e}"
 
     save_cookies(sess.cookies.get_dict())
@@ -193,28 +256,52 @@ def do_signin(sess: requests.Session) -> tuple[bool, str]:
     try:
         data = resp.json()
     except json.JSONDecodeError as e:
+        send_wecom_message(
+            f"❌ 硕学霸签到失败\n"
+            f"时间: {datetime.datetime.now().strftime('%Y-%m-%d %H:%M:%S')}\n"
+            f"响应解析异常: {e}\n原始响应: {resp.text[:200]}"
+        )
+
         return False, f"响应格式错误: {e}"
 
     if data.get('success') is True:
         msg = data.get('data', {}).get('message', '')
         record_sign_result(datetime.date.today().isoformat(), "success")
+        send_wecom_message(
+            f"✅ 硕学霸签到成功\n"
+            f"时间: {datetime.datetime.now().strftime('%Y-%m-%d %H:%M:%S')}\n"
+            f"消息: {msg}"
+        )
         return True, msg
     else:
         msg = data.get('msg', '')
         if '今日您已签到' in msg:
             record_sign_result(datetime.date.today().isoformat(), "success")
+            send_wecom_message(
+                f"ℹ️ 硕学霸今日已签到\n"
+                f"时间: {datetime.datetime.now().strftime('%Y-%m-%d %H:%M:%S')}\n"
+                f"消息: {msg}"
+            )
             return True, msg
         record_sign_result(datetime.date.today().isoformat(), "failed")
+        send_wecom_message(
+            f"❌ 硕学霸签到失败\n"
+            f"时间: {datetime.datetime.now().strftime('%Y-%m-%d %H:%M:%S')}\n"
+            f"消息: {msg}"
+        )
         return False, msg
+
 
 def should_sign_today() -> bool:
     today = datetime.date.today().isoformat()
     last = load_last_sign_date()
     return last == today
 
+
 def mark_signed_today() -> None:
     today = datetime.date.today().isoformat()
     save_last_sign_date(today)
+
 
 def is_time_to_sign(target_time: str) -> bool:
     now = datetime.datetime.now()
@@ -224,8 +311,13 @@ def is_time_to_sign(target_time: str) -> bool:
     except:
         return False
 
+
 def background_worker(sess: requests.Session):
     print(f"[系统] 后台签到线程已启动", flush=True)
+    send_wecom_message(
+        f"✅ 硕学霸自动签到程序已启动\n"
+        f"时间: {datetime.datetime.now().strftime('%Y-%m-%d %H:%M:%S')}\n"
+    )
     while True:
         try:
             do_heartbeat(sess)
@@ -246,15 +338,18 @@ def background_worker(sess: requests.Session):
             traceback.print_exc()
             time.sleep(60)
 
+
 # ==================== Flask 路由 ====================
 @app.route('/')
 def index():
     return render_template('index.html')
 
+
 @app.route('/history')
 def get_history():
     with history_lock:
         return jsonify(load_history())
+
 
 @app.route('/platform_history')
 def platform_history():
@@ -265,6 +360,7 @@ def platform_history():
         return jsonify({"dates": []})
     dates = get_platform_dates(year, month)
     return jsonify({"dates": dates})
+
 
 @app.route('/cookies', methods=['POST'])
 def update_cookies():
@@ -281,6 +377,7 @@ def update_cookies():
     else:
         return jsonify({"status": "error", "msg": "写入文件失败"}), 500
 
+
 @app.route('/setting', methods=['GET', 'POST'])
 def setting():
     if request.method == 'GET':
@@ -288,20 +385,28 @@ def setting():
             return jsonify(load_setting())
     else:
         data = request.get_json()
-        if not data or 'sign_time' not in data:
-            return jsonify({"status": "error", "msg": "缺少 sign_time"}), 400
-        sign_time = data['sign_time']
-        try:
-            datetime.datetime.strptime(sign_time, "%H:%M")
-        except:
-            return jsonify({"status": "error", "msg": "时间格式错误，请使用 HH:MM"}), 400
+        if not data:
+            return jsonify({"status": "error", "msg": "请求体为空"}), 400
+        sign_time = data.get('sign_time')
+        if sign_time:
+            try:
+                datetime.datetime.strptime(sign_time, "%H:%M")
+            except:
+                return jsonify({"status": "error", "msg": "时间格式错误，请使用 HH:MM"}), 400
+        webhook_key = data.get('wecom_webhook_key', '').strip()
         with setting_lock:
             setting = load_setting()
-            setting['sign_time'] = sign_time
+            if sign_time:
+                setting['sign_time'] = sign_time
+            if webhook_key:
+                setting['wecom_webhook_key'] = webhook_key
+            else:
+                setting.pop('wecom_webhook_key', None)  # 清空
             if save_setting(setting):
-                return jsonify({"status": "ok", "msg": "签到时间已更新"})
+                return jsonify({"status": "ok", "msg": "设置已更新"})
             else:
                 return jsonify({"status": "error", "msg": "写入设置文件失败"}), 500
+
 
 # ==================== 主程序入口 ====================
 def main():
@@ -310,10 +415,15 @@ def main():
     ensure_default_cookie_file()
     ensure_default_setting_file()
     session = create_session()
-    worker = threading.Thread(target=background_worker, args=(session,), daemon=True)
-    worker.start()
+
+    # 只在 werkzeug 的子进程中启动后台线程（debug 模式下）
+    if os.environ.get('WERKZEUG_RUN_MAIN') == 'true':
+        worker = threading.Thread(target=background_worker, args=(session,), daemon=True)
+        worker.start()
+
     app.config['TEMPLATES_AUTO_RELOAD'] = True
     app.run(host='0.0.0.0', port=23344, debug=True)
+
 
 if __name__ == "__main__":
     main()
