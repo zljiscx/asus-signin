@@ -90,6 +90,9 @@ function loadSetting() {
         if (data.sign_time) {
             document.getElementById('signTime').value = data.sign_time;
         }
+        if (data.wecom_webhook_key) {
+            document.getElementById('webhookKey').value = data.wecom_webhook_key;
+        }
     }).catch(e => console.error('加载设置失败', e));
 }
 
@@ -156,5 +159,25 @@ document.getElementById('submitCookieBtn').addEventListener('click', () => {
     });
 });
 
+document.getElementById('saveWebhookBtn').addEventListener('click', () => {
+    const key = document.getElementById('webhookKey').value.trim();
+    // 简单验证：只允许字母、数字、连字符（UUID格式）
+    if (key && !/^[a-f0-9\-]+$/i.test(key)) {
+        document.getElementById('webhookMsg').textContent = '⚠️ Key 格式不正确（应为字母数字和连字符）';
+        document.getElementById('webhookMsg').style.color = 'red';
+        return;
+    }
+    fetch('/setting', {
+        method: 'POST',
+        headers: {'Content-Type': 'application/json'},
+        body: JSON.stringify({ wecom_webhook_key: key })
+    }).then(r => r.json()).then(data => {
+        document.getElementById('webhookMsg').textContent = data.msg || '已保存';
+        document.getElementById('webhookMsg').style.color = data.status === 'ok' ? 'green' : 'red';
+    }).catch(e => {
+        document.getElementById('webhookMsg').textContent = '保存失败: ' + e;
+        document.getElementById('webhookMsg').style.color = 'red';
+    });
+});
 loadSetting();
 refreshCalendar();
