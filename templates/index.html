@@ -33,13 +33,13 @@
     <div class="setting-group">
         <label for="signTime">签到时间：</label>
         <input type="time" id="signTime" value="05:00" step="60">
-        <button id="saveSettingBtn">保存设置</button>
+        <button id="saveSettingBtn">保存时间</button>
         <span id="settingMsg" style="color:#888;"></span>
     </div>
 
-    <div class="setting-group">
+    <div class="setting-group webhook-group">
         <label for="webhookKey">Webhook Key：</label>
-        <input type="text" id="webhookKey" placeholder="企微群聊的消息推送Webhook地址中的key,例如：33256f8a-874b-49e2-be6d-f77f82c77e4e" style="flex:1; min-width:200px;">
+        <input type="text" id="webhookKey" placeholder="Webhook key 如：33256f8a-874b-49e2-be6d-f77f82c77e4e">
         <button id="saveWebhookBtn">保存 Key</button>
     </div>
     <div id="webhookMsg" style="color:#888; margin-top:5px;"></div>
@@ -50,7 +50,7 @@
         <h2 style="margin:0 0 10px 0;">🔄 更新 Cookies</h2>
         <!-- 提示文字与按钮同一行，按钮靠右 -->
         <div class="cookie-row">
-            <p style="margin:0;">支持 <code>key1=value1; key2=value2; ...</code> 或 JSON 格式</p>
+            <p style="margin:0;">支持 <code>key1=value1; key2=value2;</code> 或 JSON</p>
             <button id="submitCookieBtn">提交 Cookies</button>
         </div>
         <textarea id="cookieInput" rows="5" placeholder='粘贴 Cookies，例如：csrftoken=xxx; sessionid=yyy'></textarea>
