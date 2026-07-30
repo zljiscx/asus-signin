@@ -37,3 +37,24 @@ button.gray:hover { background: #666; }
 .setting-group input[type="time"] { height: 36px; box-sizing: border-box; padding: 0 12px; }
 .setting-group button { height: 36px; box-sizing: border-box; padding: 0 16px; }
 #webhookMsg { margin-top: 5px; color: #888; }
+.webhook-group { display: flex; align-items: center; gap: 10px; flex-wrap: nowrap; width: 100%; }
+.webhook-group label { white-space: nowrap; flex: 0 0 auto; }
+.webhook-group input[type="text"] { flex: 1 1 0; min-width: 0; height: 36px; box-sizing: border-box; padding: 0 12px; }
+.webhook-group button { flex: 0 0 auto; margin-left: auto; height: 36px; box-sizing: border-box; padding: 0 16px; }
+
+/* 手机竖屏专用 (≤600px) */
+@media (max-width: 600px) {
+.nav-legend-row { flex-direction: column; align-items: stretch; gap: 6px; }
+.nav-legend-row .nav-buttons { display: flex; justify-content: space-between; }
+.nav-legend-row .nav-buttons button { flex: 0 1 auto; min-width: 0; }
+.nav-legend-row .legend { display: flex; justify-content: space-between; flex-wrap: nowrap; gap: 0; }
+.nav-legend-row .legend .legend-item { flex: 0 1 auto; }
+.setting-group { flex-wrap: nowrap; gap: 0; align-items: center; }
+.setting-group label { width: 70px; flex: 0 0 70px; margin-right: 5px; white-space: nowrap; }
+.setting-group input[type="time"] { flex: 1 1 0; min-width: 0; margin-right: 5px; }
+.setting-group button { flex: 0 0 auto; margin-left: auto; margin-right: 0; }
+.webhook-group { gap: 0; }
+.webhook-group label { width: 70px; flex: 0 0 70px; white-space: normal; margin-right: 5px; }
+.webhook-group input[type="text"] { flex: 1 1 0; min-width: 0; margin-right: 5px; }
+.webhook-group button { flex: 0 0 auto; margin-left: auto; margin-right: 0; }
+}
