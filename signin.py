@@ -234,6 +234,11 @@ def do_heartbeat(sess: requests.Session) -> bool:
         return False
     new_cookies = sess.cookies.get_dict()
     if new_cookies != old_cookies:
+        send_wecom_message(
+            f"ℹ️ cookies有更新\n"
+            f"时间: {datetime.datetime.now().strftime('%Y-%m-%d %H:%M:%S')}\n"
+            f"最新cookies: {new_cookies}"
+        )
         save_cookies(new_cookies)
     return True
 
