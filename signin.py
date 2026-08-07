@@ -319,10 +319,6 @@ def is_time_to_sign(target_time: str) -> bool:
 
 def background_worker(sess: requests.Session):
     print(f"[系统] 后台签到线程已启动", flush=True)
-    send_wecom_message(
-        f"✅ 硕学霸自动签到程序已启动\n"
-        f"时间: {datetime.datetime.now().strftime('%Y-%m-%d %H:%M:%S')}\n"
-    )
     while True:
         try:
             do_heartbeat(sess)
